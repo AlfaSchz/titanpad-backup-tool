@@ -6,7 +6,7 @@
 # So I tunned this bash script to wget and backup my pads: https://github.com/AlfaSchz/titanpad-backup-tool
 # Forked from: https://github.com/domenkozar/titanpad-backup-tool/blob/master/titanpad_backup.sh
 
-# The most tricky part was re-login once the sesion expires and keep looping through the pads. Line 77 does the trick.
+# The most tricky part was re-login once the sesion expires and keep looping through the pads. Line 75 does the trick.
 # I also removed the zipping bit, the cron bit (since this should be a one time and goodbye backup) and left it verbose.
 
 # Please use it gently or we might overload titanpad.com servers. Any improvement, specially in this regard, would be very welcome ;)
@@ -54,8 +54,6 @@ logout() {
 }
 
 # download the newest pad
-#--tries=10 -w 200m --waitretry=10 
-#--load-cookies $COOKIE 
 download_pad_list() {
     wget --load-cookies $COOKIE \
          --no-check-certificate \
@@ -72,8 +70,8 @@ download_pad_list() {
 download_pad_and_check(){
     wget --load-cookies $COOKIE \
     --no-check-certificate \
+    -p -k -e robots=off --random-wait -U mozilla\
     -P ./$LOCATION/ \
-    -p \
     $1 2>&1 | tee /dev/tty | if grep -o "sign-in"; then login && download_pad_and_check $1; else sed -i '1d' ./$LOCATION/extract-pads-list.txt; fi;
 }
     

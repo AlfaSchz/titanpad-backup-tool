@@ -17,7 +17,7 @@ Please use it gently or we might overload titanpad.com servers. Any improvement,
 
 Make backups of a [titanpad](https://github.com/titanpad/titanpad) subdomain.
 
-Only latest version of the pads (with colors/authors) are backed up.
+Only the latest version of the pads (with colors/authors) will be backed up.
 
 <!-- BEGIN-MARKDOWN-TOC -->
 * [Usage](#usage)

@@ -1,7 +1,7 @@
 #/bin/bash -x
 
 # Titanpad is closing (thank you so much guys!) it is time to bak up our pads.
-# The native download as zip option did not work for us. It seems we had just too much pads (around 600) for the sever to handle.
+# The native download as zip option did not work for us. It seems we had just too much pads for the sever to handle.
 
 # So I tunned this bash script to wget and backup my pads: https://github.com/AlfaSchz/titanpad-backup-tool
 # Forked from: https://github.com/domenkozar/titanpad-backup-tool/blob/master/titanpad_backup.sh

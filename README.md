@@ -1,6 +1,7 @@
 # titanpad-backup-tool
 
 ---
+
 Titanpad is closing (thank you so much guys!) and it is time to back up our pads.
 
 The native download as zip option did not work for me. It seems I had just too much pads (around 600) for the sever to handle it.
@@ -8,6 +9,7 @@ The native download as zip option did not work for me. It seems I had just too m
 So I put tunned this [bash script](https://github.com/AlfaSchz/titanpad-backup-tool/blob/master/titanpad_backup_wget.sh) to wget and backup my pads. Forked from [here](https://github.com/domenkozar/titanpad-backup-tool/blob/master/titanpad_backup.sh).
 
 Please use it gently or it might overload titanpad.com servers.
+
 ---
 
 Make backups of a [titanpad](https://github.com/titanpad/titanpad) subdomain.

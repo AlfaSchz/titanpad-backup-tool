@@ -6,7 +6,8 @@
 # So I tunned this bash script to wget and backup my pads: https://github.com/AlfaSchz/titanpad-backup-tool
 # Forked from: https://github.com/domenkozar/titanpad-backup-tool/blob/master/titanpad_backup.sh
 
-# The most tricky part was re-login once the sesion expires and keep looping through the pads. Line 75 does the trick.
+# The most tricky part was re-login once the sesion expires and keep looping through the pads. Line 78 does the trick.
+# Relative links to local folder structures and --page-requisites were kinda tricky as well.
 # I also removed the zipping bit, the cron bit (since this should be a one time and goodbye backup) and left it verbose.
 
 # Please use it gently or we might overload titanpad.com servers. Any improvement, specially in this regard, would be very welcome ;)
@@ -53,24 +54,26 @@ logout() {
     rm $COOKIE
 }
 
-# download the newest pad
+# Download the pad list. Download the first pad out of the loop to wget the --page-requisites only once. In the wget loop is not a good idea to keep downloading them since -k and -nc do not get alone well and -N does not work because there is no timestamp :-/ 
 download_pad_list() {
     wget --load-cookies $COOKIE \
          --no-check-certificate \
          --quiet \
          -q -O ./$LOCATION/all-pads.html \
-         "https://$DOMAIN.titanpad.com/ep/padlist/all-pads"; \
+         "https://$DOMAIN.titanpad.com/ep/padlist/all-pads";
     > ./$LOCATION/extract-pads-list.txt;
     CLASSTITLE=$(grep -o -m 1 title.*href= ./$LOCATION/all-pads.html);
     PADURL='class="'$CLASSTITLE'"';
-    grep -Po "(?<=$PADURL)[^\"]*" ./$LOCATION/all-pads.html | while read pads; do echo "https://$DOMAIN.titanpad.com/ep/pad/view"$pads'/latest' >> ./$LOCATION/extract-pads-list.txt; done; \
-    }
+    grep -Po "(?<=$PADURL)[^\"]*" ./$LOCATION/all-pads.html | while read pads; do echo "https://$DOMAIN.titanpad.com/ep/pad/view"$pads'/latest' >> ./$LOCATION/extract-pads-list.txt; done;
+    wget --load-cookies $COOKIE --no-check-certificate -k -p -e robots=off --random-wait -U mozilla -P ./$LOCATION/ $(sed -i -e '1 w /dev/stdout' -e '1d' ./$LOCATION/extract-pads-list.txt);
+}
 
 
+#Download pad. Check if sesion is expired, if so login again and keep looping from the last pad.
 download_pad_and_check(){
     wget --load-cookies $COOKIE \
     --no-check-certificate \
-    -p -k -e robots=off --random-wait -U mozilla\
+    -x -k --random-wait -U mozilla\
     -P ./$LOCATION/ \
     $1 2>&1 | tee /dev/tty | if grep -o "sign-in"; then login && download_pad_and_check $1; else sed -i '1d' ./$LOCATION/extract-pads-list.txt; fi;
 }
@@ -79,6 +82,11 @@ download_pads() {
     while read pad; do \
       download_pad_and_check $pad;
     done < ./$LOCATION/extract-pads-list.txt;
+}
+
+#Since we are not -p -k ing the wget loop to avoid downlad all the images, css, and js dozens of times (see above), we need to change its sources to relative local directories. 
+local_folder_structure(){
+  grep -rl 'https://xnetxnet.titanpad.com/static/' ./$LOCATION/$DOMAIN.titanpad.com/ep/pad/view/ | xargs sed -i 's#https://xnetxnet.titanpad.com/static/#../../../../static/#g'
 }
 
 
@@ -111,3 +119,4 @@ login
 download_pad_list
 download_pads
 logout
+local_folder_structure

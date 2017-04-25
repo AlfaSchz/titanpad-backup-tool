@@ -1,13 +1,12 @@
 #/bin/bash -x
 
 # Titanpad is closing (thank you so much guys!) it is time to back up our pads.
-# The native download as zip option did not work for us. It seems we had too much pads for the sever to handle.
+# The native download as zip option did not work for us. Maybe too much pads for the sever to handle.
 
 # So I tunned this bash script to wget and backup our pads: https://github.com/AlfaSchz/titanpad-backup-tool
 # Forked from: https://github.com/domenkozar/titanpad-backup-tool/blob/master/titanpad_backup.sh
 
-# The trickiest part was re-login once the sesion expires to keep looping through the pads. Line 78 does the trick.
-# Relative links for local folders structures and --page-requisites were kinda tricky as well.
+# The most tricky part was re-login once the sesion expires and keep looping through the pads. Line 85 does the trick.
 # I also removed the zipping bit, the cron bit (since this should be a one time and goodbye backup) and left it verbose.
 
 # Please use it gently or we might overload titanpad.com servers. Any improvement, specially in this regard, would be very welcome ;)
@@ -23,9 +22,17 @@ usage() {
      echo "Usage: $0 [-hx] -d <subdomain> {-u <user> -p <password> | -a <user-password-file>}" 1>&2;
      echo "	-h	This usage note"
      echo "	-d	Subdomain to backup"
-     echo "	-u	Username"
+     echo "	-u	Username (mail)"
      echo "	-p	Password"
      echo "	-a	File containing Username (first line) and Password (second line)"
+     echo "	"
+     echo "	_Example_"
+     echo "	domain: mypads.titanpad.com"
+     echo "	user: joe@mail.com"
+     echo "	password: piZZaword"
+     echo "	"
+     echo "	./titanpad-backup-wget.sh -d mypads {-u joe@mail.com -p piZZaword}"
+     echo "	"
      exit 1;
 }
 
@@ -112,6 +119,22 @@ done
 
 LOCATION=$DOMAIN-titanpad_backup_pads_$(date "+%Y-%m-%d")
 COOKIE=./$LOCATION/.cookie
+
+if [ -z "$DOMAIN" ];then
+    usage
+elif [ -z "$USER" ] || [ -z "$PASSWORD" ];then
+    if [ -z "$USER_PASSWORD_FILE" ] || [ ! -f "$USER_PASSWORD_FILE" ] || [ ! -r "$USER_PASSWORD_FILE" ];then
+        echo "No such file: $USER_PASSWORD_FILE"
+        usage
+    else
+        USER=$(head -n1 < $USER_PASSWORD_FILE)
+        PASSWORD=$(sed -n 2p $USER_PASSWORD_FILE)
+        if [ -z "$USER" ] || [ -z "$PASSWORD" ];then
+            echo "Couldn't parse user/password file. Must contain username and password separated by single newline."
+            usage
+        fi
+    fi
+fi
 
 
 ensure_paths

@@ -36,9 +36,12 @@ Usage: ./titanpad_backup-wget.sh [-h] -d <subdomain> {-u <user> -p <password> | 
 ```
 
 __Example__
-domain: mypads.titanpad.com
-user: joe@mail.com
-password: piZZword
+
+ domain: mypads.titanpad.com  
+ 
+ user: joe@mail.com 
+ 
+ password: piZZword 
 
 ```
 $ ./titanpad-backup-wget.sh -d mypads {-u joe@mail.com -p piZZaword}

@@ -1,18 +1,18 @@
 #/bin/bash -x
 
-# Titanpad is closing (thank you so much guys!) it is time to bak up our pads.
-# The native download as zip option did not work for us. It seems we had just too much pads for the sever to handle.
+# Titanpad is closing (thank you so much guys!) it is time to back up our pads.
+# The native download as zip option did not work for us. It seems we had too much pads for the sever to handle.
 
-# So I tunned this bash script to wget and backup my pads: https://github.com/AlfaSchz/titanpad-backup-tool
+# So I tunned this bash script to wget and backup our pads: https://github.com/AlfaSchz/titanpad-backup-tool
 # Forked from: https://github.com/domenkozar/titanpad-backup-tool/blob/master/titanpad_backup.sh
 
-# The most tricky part was re-login once the sesion expires and keep looping through the pads. Line 78 does the trick.
-# Relative links to local folder structures and --page-requisites were kinda tricky as well.
+# The trickiest part was re-login once the sesion expires to keep looping through the pads. Line 78 does the trick.
+# Relative links for local folders structures and --page-requisites were kinda tricky as well.
 # I also removed the zipping bit, the cron bit (since this should be a one time and goodbye backup) and left it verbose.
 
 # Please use it gently or we might overload titanpad.com servers. Any improvement, specially in this regard, would be very welcome ;)
 
-# Alfa https://twitter.com/alfaschz
+# By Alfa https://twitter.com/alfaschz
 # Licence: CC - Multiply and spread! :) and also https://github.com/AlfaSchz/titanpad-backup-tool/blob/master/LICENSE
 
 DOMAIN=

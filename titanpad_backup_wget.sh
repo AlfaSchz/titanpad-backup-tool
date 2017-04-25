@@ -1,3 +1,4 @@
+
 #/bin/bash -x
 
 # Titanpad is closing (thank you so much guys!) it is time to back up our pads.
@@ -95,7 +96,7 @@ download_pads() {
 
 #Since we are not -p -k ing the wget loop to avoid downlad all the images, css, and js dozens of times (see above), we need to change its sources to relative local directories. 
 local_folder_structure(){
-  grep -rl 'https://xnetxnet.titanpad.com/static/' ./$LOCATION/$DOMAIN.titanpad.com/ep/pad/view/ | xargs sed -i 's#https://xnetxnet.titanpad.com/static/#../../../../static/#g'
+  grep -rl "https://$DOMAIN.titanpad.com/static/" ./$LOCATION/$DOMAIN.titanpad.com/ep/pad/view/ | xargs sed -i "s#https://$DOMAIN..titanpad.com/static/#../../../../static/#g"
 }
 
 

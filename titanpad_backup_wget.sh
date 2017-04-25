@@ -11,6 +11,8 @@
 
 # Please use it gently or we might overload titanpad.com servers. Any improvement, specially in this regard, would be very welcome ;)
 
+# Note: The pads will be backed up in your local computer. The backup will contain only the latest version of the pad but it will still show the colors of the authors. The timeslider does not work.
+
 # By Alfa https://twitter.com/alfaschz
 # Licence: CC - Multiply and spread! :) and also https://github.com/AlfaSchz/titanpad-backup-tool/blob/master/LICENSE
 
